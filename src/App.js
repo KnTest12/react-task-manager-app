@@ -7,9 +7,10 @@ export default function App() {
       <div className="sidebar">
         <h4>Actions</h4>
         <div>Filter tasks by...</div>
-        <div>Active</div>
+        <div>Current</div>
         <div>Completed</div>
         <div>Important</div>
+        <div>None</div>
         <button>Add New Task</button>
       </div>
       <div className="content">
@@ -24,7 +25,14 @@ export default function App() {
           </div>
           <ul>
             <li>
-              <p>Task #1: Title</p>
+              <div>
+                <p>Task #1: Title</p>
+                <div>
+                  <span className="deadline">🕒 5 Days left</span>
+                  <span className="delete-task">🗑️</span>
+                  <span className="complete-task">✅</span>
+                </div>
+              </div>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. At iam
                 decimum annum in spelunca iacet. Quamquam te quidem video minime
@@ -35,7 +43,14 @@ export default function App() {
               </p>
             </li>
             <li>
-              <p>Task #2: Title</p>
+              <div>
+                <p>Task #2: Title</p>
+                <div>
+                  <span className="deadline">❗Due Today</span>
+                  <span className="delete-task">🗑️</span>
+                  <span className="complete-task">✅</span>
+                </div>
+              </div>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. At iam
                 decimum annum in spelunca iacet. Quamquam te quidem video minime
@@ -53,7 +68,14 @@ export default function App() {
           </div>
           <ul>
             <li>
-              <p>Task #3: Title</p>
+              <div>
+                <p>Task #3: Title</p>
+                <div>
+                  <span className="deadline">⚠️1 Day left </span>
+                  <span className="delete-task">🗑️</span>
+                  <span className="complete-task">✅</span>
+                </div>
+              </div>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. At iam
                 decimum annum in spelunca iacet. Quamquam te quidem video minime
@@ -71,7 +93,12 @@ export default function App() {
           </div>
           <ul>
             <li>
-              <p>Task #4: Title</p>
+              <div>
+                <p>Task #4: Title</p>
+                <div>
+                  <span className="deadline">✔️Done</span>
+                </div>
+              </div>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. At iam
                 decimum annum in spelunca iacet. Quamquam te quidem video minime
@@ -83,6 +110,15 @@ export default function App() {
             </li>
           </ul>
         </div>
+        <form className="form-add-task">
+          <label>Title</label>
+          <input type="text"></input>
+          <label>Description</label>
+          <input type="text"></input>
+          <label>Due Date</label>
+          <input type="date"></input>
+          <button>Add Task</button>
+        </form>
       </div>
       <div className="footer">©️ 2025 KN</div>
     </div>
