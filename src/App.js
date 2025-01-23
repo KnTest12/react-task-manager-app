@@ -27,7 +27,7 @@ export default function App() {
             <li>
               <div>
                 <p>Task #1: Title</p>
-                <div>
+                <div className="task-action">
                   <span className="deadline">🕒 5 Days left</span>
                   <span className="delete-task">🗑️</span>
                   <span className="complete-task">✅</span>
@@ -45,7 +45,7 @@ export default function App() {
             <li>
               <div>
                 <p>Task #2: Title</p>
-                <div>
+                <div className="task-action">
                   <span className="deadline">❗Due Today</span>
                   <span className="delete-task">🗑️</span>
                   <span className="complete-task">✅</span>
@@ -70,7 +70,7 @@ export default function App() {
             <li>
               <div>
                 <p>Task #3: Title</p>
-                <div>
+                <div className="task-action">
                   <span className="deadline">⚠️1 Day left </span>
                   <span className="delete-task">🗑️</span>
                   <span className="complete-task">✅</span>
@@ -95,7 +95,7 @@ export default function App() {
             <li>
               <div>
                 <p>Task #4: Title</p>
-                <div>
+                <div className="task-action">
                   <span className="deadline">✔️Done</span>
                 </div>
               </div>

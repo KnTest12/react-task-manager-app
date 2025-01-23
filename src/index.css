@@ -229,13 +229,14 @@ li:hover {
   cursor: pointer;
 }
 
-.deadline {
-  font-size: 0.9em;
+.task-action {
+  display: grid;
+  grid-template-columns: 4fr 0.1fr 0.1fr;
+  gap: 10px;
 }
 
-.delete-task {
-  margin-left: 11vh;
-  padding: 5px;
+.deadline {
+  font-size: 0.9em;
 }
 
 .delete-task:hover,
