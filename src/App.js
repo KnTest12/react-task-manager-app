@@ -61,13 +61,21 @@ export default function App() {
     setShowAddTask(false);
   }
 
+  function handleCompleteTask(id) {
+    setTasks((tasks) =>
+      tasks.map((task) =>
+        task.id === id ? { ...task, deadline: null, status: "completed" } : task
+      )
+    );
+  }
+
   return (
     <div className="app">
       <div className="header">
         <h2>Task Manager App</h2>
       </div>
       <Sidebar showAddTask={showAddTask} onShowAddForm={handleShowAddForm} />
-      <TaskManager tasks={tasks} />
+      <TaskManager tasks={tasks} onCompleteTask={handleCompleteTask} />
       {showAddTask && <AddForm id={id} onAddTask={handleAddTask} />}
       <div className="footer">©️ 2025 KN</div>
     </div>
@@ -90,13 +98,19 @@ function Sidebar({ showAddTask, onShowAddForm }) {
   );
 }
 
-function TaskManager({ tasks }) {
+function TaskManager({ tasks, onCompleteTask }) {
   return (
     <div className="content">
       <Sortbar />
-      <Tasklist tasks={tasks}>current</Tasklist>
-      <Tasklist tasks={tasks}>important</Tasklist>
-      <Tasklist tasks={tasks}>completed</Tasklist>
+      <Tasklist tasks={tasks} onCompleteTask={onCompleteTask}>
+        current
+      </Tasklist>
+      <Tasklist tasks={tasks} onCompleteTask={onCompleteTask}>
+        important
+      </Tasklist>
+      <Tasklist tasks={tasks} onCompleteTask={onCompleteTask}>
+        completed
+      </Tasklist>
     </div>
   );
 }
@@ -111,7 +125,7 @@ function Sortbar() {
   );
 }
 
-function Tasklist({ tasks, children }) {
+function Tasklist({ tasks, children, onCompleteTask }) {
   const filteredTasks = tasks.filter((tasks) => tasks.status === children);
   const numTasks = filteredTasks.length;
 
@@ -120,7 +134,7 @@ function Tasklist({ tasks, children }) {
       <TaskStatus numTasks={numTasks} name={children} />
       <ul>
         {filteredTasks.map((task) => (
-          <TaskInfo task={task} key={task.id} />
+          <TaskInfo task={task} key={task.id} onCompleteTask={onCompleteTask} />
         ))}
       </ul>
     </div>
@@ -136,7 +150,7 @@ function TaskStatus({ numTasks, name }) {
   );
 }
 
-function TaskInfo({ task }) {
+function TaskInfo({ task, onCompleteTask }) {
   return (
     <li>
       <div>
@@ -154,7 +168,12 @@ function TaskInfo({ task }) {
           {task.status === "completed" || (
             <>
               <span className="delete-task">🗑️</span>
-              <span className="complete-task">✅</span>
+              <span
+                className="complete-task"
+                onClick={() => onCompleteTask(task.id)}
+              >
+                ✅
+              </span>
             </>
           )}
         </div>
