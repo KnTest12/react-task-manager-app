@@ -50,6 +50,7 @@ const taskList = [
 export default function App() {
   const [tasks, setTasks] = useState([...taskList]);
   const [showAddTask, setShowAddTask] = useState(false);
+  const id = tasks.length + 1;
 
   function handleShowAddForm() {
     setShowAddTask((showAddTask) => !showAddTask);
@@ -67,7 +68,7 @@ export default function App() {
       </div>
       <Sidebar showAddTask={showAddTask} onShowAddForm={handleShowAddForm} />
       <TaskManager tasks={tasks} />
-      {showAddTask && <AddForm />}
+      {showAddTask && <AddForm id={id} onAddTask={handleAddTask} />}
       <div className="footer">©️ 2025 KN</div>
     </div>
   );
@@ -163,15 +164,60 @@ function TaskInfo({ task }) {
   );
 }
 
-function AddForm() {
+function AddForm({ id, onAddTask }) {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const currentDate = new Date();
+  const selectedDate = new Date(date + "T00:00:00");
+  const deadline = Math.floor(
+    (selectedDate.setHours(0, 0, 0, 0) - currentDate.setHours(0, 0, 0, 0)) /
+      (1000 * 60 * 60 * 24)
+  );
+  let status = "";
+
+  if (deadline > 1) {
+    status = "current";
+  } else if (deadline === 1 || deadline === 0) {
+    status = "important";
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (!title || !description || !date) return;
+
+    const newTask = {
+      id,
+      title,
+      description,
+      deadline,
+      status,
+    };
+    onAddTask(newTask);
+  }
+
   return (
-    <form className="form-add-task">
+    <form className="form-add-task" onSubmit={handleSubmit}>
       <label>Title</label>
-      <input type="text"></input>
+      <input
+        type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      ></input>
       <label>Description</label>
-      <input type="text"></input>
+      <input
+        type="text"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      ></input>
       <label>Due Date</label>
-      <input type="date"></input>
+      <input
+        type="date"
+        value={date}
+        min={new Date(Date.now() - 86400000).toISOString().split("T")[0]}
+        onChange={(e) => setDate(e.target.value)}
+      ></input>
       <Button>form-button</Button>
     </form>
   );
