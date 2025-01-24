@@ -170,10 +170,16 @@ function TaskStatus({ numTasks, name }) {
 }
 
 function TaskInfo({ task, onCompleteTask, onDeleteTask }) {
+  const [toggleDescription, setToggleDescription] = useState(false);
+
+  function handleDescription() {
+    setToggleDescription((toggleDescription) => !toggleDescription);
+  }
+
   return (
     <li>
       <div>
-        <p>
+        <p className="toggle" onClick={handleDescription}>
           Task #{task.id}: {task.title}
         </p>
         <div className="task-action">
@@ -202,7 +208,7 @@ function TaskInfo({ task, onCompleteTask, onDeleteTask }) {
           )}
         </div>
       </div>
-      <p>{task.description}</p>
+      {toggleDescription && <p>{task.description}</p>}
     </li>
   );
 }
