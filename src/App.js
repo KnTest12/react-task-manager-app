@@ -303,7 +303,7 @@ function AddForm({ id, onAddTask }) {
       <input
         type="date"
         value={date}
-        min={new Date(Date.now() - 86400000).toISOString().split("T")[0]}
+        min={new Date().toISOString().split("T")[0]}
         onChange={(e) => setDate(e.target.value)}
       ></input>
       <Button>form-button</Button>

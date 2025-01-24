@@ -1,5 +1,7 @@
 # Task Manager App
+
 The task manager application is a simple application that aims to put into practice all the concepts of the beginner level react concepts I've learned.
+
 ## React Concepts Learned at Beginner Level
 
 1. Conditional Rendering
@@ -17,12 +19,14 @@ The task manager application is a simple application that aims to put into pract
 13. Ternary Operator
 14. useState
 
-*Disclaimer: This list may not be exhaustive and could potentially miss some additional concepts learned during the initial stages of my React learning journey.*
+_Disclaimer: This list may not be exhaustive and could potentially miss some additional concepts learned during the initial stages of my React learning journey._
 
 ## Key Features
+
 1. Task list display
 2. Add new tasks
 3. Mark tasks as complete
 4. Delete tasks
 5. Filter tasks by status (all, active, completed, Important)
-6. Task count summary
+6. Task count indicator
+7. Sort tasks by task number or deadlines

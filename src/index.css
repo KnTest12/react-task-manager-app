@@ -104,6 +104,10 @@ form {
   border: 1px solid var(--color-content-border);
 }
 
+textarea {
+  resize: none;
+}
+
 .form-add-task {
   grid-template-columns: 1fr 1.5fr;
   margin-bottom: 1.6rem;
