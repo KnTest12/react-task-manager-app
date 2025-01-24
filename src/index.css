@@ -166,13 +166,22 @@ form {
   margin-right: 20px;
 }
 
-.sortbar span {
+.sortbar ul {
+  display: flex;
+}
+
+.sortbar li {
+  margin-top: 10px;
   margin-right: 20px;
-  padding: 5px;
+  padding: 10px;
   cursor: pointer;
 }
 
-.sortbar span:hover {
+.selected {
+  color: rgb(16, 238, 134);
+}
+
+.sortbar li:hover {
   color: var(--color-sortbar-hover-text);
 }
 

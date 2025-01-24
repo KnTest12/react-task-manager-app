@@ -107,13 +107,28 @@ function Sidebar({ showAddTask, onShowAddForm }) {
 }
 
 function TaskManager({ tasks, onCompleteTask, onDeleteTask }) {
+  const [sortBy, setSortBy] = useState("id");
+
+  const currentSort = (a, b) => {
+    if (sortBy === "id") {
+      return a.id - b.id;
+    } else if (sortBy === "deadline") {
+      return a.deadline - b.deadline;
+    }
+  };
+
+  function handleSort(category) {
+    setSortBy((sortBy) => category);
+  }
+
   return (
     <div className="content">
-      <Sortbar />
+      <Sortbar sortBy={sortBy} onSort={handleSort} />
       <Tasklist
         tasks={tasks}
         onCompleteTask={onCompleteTask}
         onDeleteTask={onDeleteTask}
+        currentSort={currentSort}
       >
         current
       </Tasklist>
@@ -121,6 +136,7 @@ function TaskManager({ tasks, onCompleteTask, onDeleteTask }) {
         tasks={tasks}
         onCompleteTask={onCompleteTask}
         onDeleteTask={onDeleteTask}
+        currentSort={currentSort}
       >
         important
       </Tasklist>
@@ -129,18 +145,39 @@ function TaskManager({ tasks, onCompleteTask, onDeleteTask }) {
   );
 }
 
-function Sortbar() {
+function Sortbar({ sortBy, onSort }) {
   return (
     <div className="sortbar">
       <label>Sort By:</label>
-      <span>Task Number</span>
-      <span>Deadlines</span>
+      <ul>
+        <li
+          className={sortBy === "id" ? "selected" : null}
+          onClick={() => onSort("id")}
+        >
+          Task Number
+        </li>
+        <li
+          className={sortBy === "deadline" ? "selected" : null}
+          onClick={() => onSort("deadline")}
+        >
+          Deadlines
+        </li>
+      </ul>
     </div>
   );
 }
 
-function Tasklist({ tasks, children, onCompleteTask, onDeleteTask }) {
-  const filteredTasks = tasks.filter((tasks) => tasks.status === children);
+function Tasklist({
+  tasks,
+  children,
+  onCompleteTask,
+  onDeleteTask,
+  currentSort,
+}) {
+  const filteredTasks = tasks
+    .filter((tasks) => tasks.status === children)
+    .slice()
+    ?.sort(currentSort);
   const numTasks = filteredTasks.length;
 
   return (
@@ -255,11 +292,13 @@ function AddForm({ id, onAddTask }) {
         onChange={(e) => setTitle(e.target.value)}
       ></input>
       <label>Description</label>
-      <input
+      <textarea
+        rows="5"
+        cols="30"
         type="text"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-      ></input>
+      ></textarea>
       <label>Due Date</label>
       <input
         type="date"
