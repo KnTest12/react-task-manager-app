@@ -8,6 +8,7 @@
   --color-content-background: #16181d;
   --color-content-border: #1f2633;
   --color-form-button: #ffa94d;
+  --color-form-button-hover: #d67610;
   --color-form-button-text: #343a40;
   --color-current-border: 1px solid blue;
   --color-important-border: 1px solid #ff922b;
@@ -78,7 +79,7 @@ html {
   padding: 2vh;
 }
 
-.sidebar button {
+.sidebar-button {
   margin: auto 0 20px 5%;
   border: 1px solid var(--color-border);
   border-radius: 100px;
@@ -88,7 +89,7 @@ html {
   color: var(--color-text);
 }
 
-.sidebar button:hover {
+.sidebar-button:hover {
   background: var(--color-sidebar-hover-background);
   cursor: pointer;
 }
@@ -107,12 +108,13 @@ form {
   grid-template-columns: 1fr 1.5fr;
   margin-bottom: 1.6rem;
   padding: 1.2rem;
-  position: absolute;
-  top: 75%;
-  left: 60%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.form-add-task button {
+.form-button {
   position: relative;
   left: 80%;
   background-color: var(--color-form-button);
@@ -123,6 +125,10 @@ form {
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
+}
+
+.form-button:hover {
+  background-color: var(--color-form-button-hover);
 }
 
 .content {

@@ -48,28 +48,32 @@ const taskList = [
 ];
 
 export default function App() {
+  const [tasks, setTasks] = useState([...taskList]);
+  const [showAddTask, setShowAddTask] = useState(false);
+
+  function handleShowAddForm() {
+    setShowAddTask((showAddTask) => !showAddTask);
+  }
+
+  function handleAddTask(task) {
+    setTasks((taskList) => [...taskList, task]);
+    setShowAddTask(false);
+  }
+
   return (
     <div className="app">
       <div className="header">
         <h2>Task Manager App</h2>
       </div>
-      <Sidebar />
-      <TaskManager />
-      <form className="form-add-task">
-        <label>Title</label>
-        <input type="text"></input>
-        <label>Description</label>
-        <input type="text"></input>
-        <label>Due Date</label>
-        <input type="date"></input>
-        <button>Add Task</button>
-      </form>
+      <Sidebar showAddTask={showAddTask} onShowAddForm={handleShowAddForm} />
+      <TaskManager tasks={tasks} />
+      {showAddTask && <AddForm />}
       <div className="footer">©️ 2025 KN</div>
     </div>
   );
 }
 
-function Sidebar() {
+function Sidebar({ showAddTask, onShowAddForm }) {
   return (
     <div className="sidebar">
       <h4>Actions</h4>
@@ -78,18 +82,20 @@ function Sidebar() {
       <div>Completed</div>
       <div>Important</div>
       <div>None</div>
-      <button>Add New Task</button>
+      <Button showAddTask={showAddTask} onClick={onShowAddForm}>
+        sidebar-button
+      </Button>
     </div>
   );
 }
 
-function TaskManager() {
+function TaskManager({ tasks }) {
   return (
     <div className="content">
       <Sortbar />
-      <Tasklist>current</Tasklist>
-      <Tasklist>important</Tasklist>
-      <Tasklist>completed</Tasklist>
+      <Tasklist tasks={tasks}>current</Tasklist>
+      <Tasklist tasks={tasks}>important</Tasklist>
+      <Tasklist tasks={tasks}>completed</Tasklist>
     </div>
   );
 }
@@ -104,9 +110,7 @@ function Sortbar() {
   );
 }
 
-function Tasklist({ children }) {
-  const [tasks, setTasks] = useState([...taskList]);
-
+function Tasklist({ tasks, children }) {
   const filteredTasks = tasks.filter((tasks) => tasks.status === children);
   const numTasks = filteredTasks.length;
 
@@ -156,5 +160,27 @@ function TaskInfo({ task }) {
       </div>
       <p>{task.description}</p>
     </li>
+  );
+}
+
+function AddForm() {
+  return (
+    <form className="form-add-task">
+      <label>Title</label>
+      <input type="text"></input>
+      <label>Description</label>
+      <input type="text"></input>
+      <label>Due Date</label>
+      <input type="date"></input>
+      <Button>form-button</Button>
+    </form>
+  );
+}
+
+function Button({ showAddTask, onClick, children }) {
+  return (
+    <button className={children} onClick={onClick}>
+      {showAddTask ? "Close Form" : "Add Task"}
+    </button>
   );
 }
