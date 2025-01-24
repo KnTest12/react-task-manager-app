@@ -69,13 +69,21 @@ export default function App() {
     );
   }
 
+  function handleDeleteTask(id) {
+    setTasks((tasks) => tasks.filter((task) => task.id !== id));
+  }
+
   return (
     <div className="app">
       <div className="header">
         <h2>Task Manager App</h2>
       </div>
       <Sidebar showAddTask={showAddTask} onShowAddForm={handleShowAddForm} />
-      <TaskManager tasks={tasks} onCompleteTask={handleCompleteTask} />
+      <TaskManager
+        tasks={tasks}
+        onCompleteTask={handleCompleteTask}
+        onDeleteTask={handleDeleteTask}
+      />
       {showAddTask && <AddForm id={id} onAddTask={handleAddTask} />}
       <div className="footer">©️ 2025 KN</div>
     </div>
@@ -98,19 +106,25 @@ function Sidebar({ showAddTask, onShowAddForm }) {
   );
 }
 
-function TaskManager({ tasks, onCompleteTask }) {
+function TaskManager({ tasks, onCompleteTask, onDeleteTask }) {
   return (
     <div className="content">
       <Sortbar />
-      <Tasklist tasks={tasks} onCompleteTask={onCompleteTask}>
+      <Tasklist
+        tasks={tasks}
+        onCompleteTask={onCompleteTask}
+        onDeleteTask={onDeleteTask}
+      >
         current
       </Tasklist>
-      <Tasklist tasks={tasks} onCompleteTask={onCompleteTask}>
+      <Tasklist
+        tasks={tasks}
+        onCompleteTask={onCompleteTask}
+        onDeleteTask={onDeleteTask}
+      >
         important
       </Tasklist>
-      <Tasklist tasks={tasks} onCompleteTask={onCompleteTask}>
-        completed
-      </Tasklist>
+      <Tasklist tasks={tasks}>completed</Tasklist>
     </div>
   );
 }
@@ -125,7 +139,7 @@ function Sortbar() {
   );
 }
 
-function Tasklist({ tasks, children, onCompleteTask }) {
+function Tasklist({ tasks, children, onCompleteTask, onDeleteTask }) {
   const filteredTasks = tasks.filter((tasks) => tasks.status === children);
   const numTasks = filteredTasks.length;
 
@@ -134,7 +148,12 @@ function Tasklist({ tasks, children, onCompleteTask }) {
       <TaskStatus numTasks={numTasks} name={children} />
       <ul>
         {filteredTasks.map((task) => (
-          <TaskInfo task={task} key={task.id} onCompleteTask={onCompleteTask} />
+          <TaskInfo
+            task={task}
+            key={task.id}
+            onCompleteTask={onCompleteTask}
+            onDeleteTask={onDeleteTask}
+          />
         ))}
       </ul>
     </div>
@@ -150,7 +169,7 @@ function TaskStatus({ numTasks, name }) {
   );
 }
 
-function TaskInfo({ task, onCompleteTask }) {
+function TaskInfo({ task, onCompleteTask, onDeleteTask }) {
   return (
     <li>
       <div>
@@ -167,7 +186,12 @@ function TaskInfo({ task, onCompleteTask }) {
           </span>
           {task.status === "completed" || (
             <>
-              <span className="delete-task">🗑️</span>
+              <span
+                className="delete-task"
+                onClick={() => onDeleteTask(task.id)}
+              >
+                🗑️
+              </span>
               <span
                 className="complete-task"
                 onClick={() => onCompleteTask(task.id)}
