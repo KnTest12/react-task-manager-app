@@ -51,6 +51,7 @@ export default function App() {
   const [tasks, setTasks] = useState([...taskList]);
   const [showAddTask, setShowAddTask] = useState(false);
   const [id, setId] = useState(tasks.length);
+  const [filter, setFilter] = useState("none");
 
   function handleShowAddForm() {
     setShowAddTask((showAddTask) => !showAddTask);
@@ -75,16 +76,26 @@ export default function App() {
     setTasks((tasks) => tasks.filter((task) => task.id !== id));
   }
 
+  function handleFilter(filterBy) {
+    setFilter((filter) => filterBy);
+  }
+
   return (
     <div className="app">
       <div className="header">
         <h2>Task Manager App</h2>
       </div>
-      <Sidebar showAddTask={showAddTask} onShowAddForm={handleShowAddForm} />
+      <Sidebar
+        onShowAddTask={showAddTask}
+        onShowAddForm={handleShowAddForm}
+        onFilter={handleFilter}
+        filter={filter}
+      />
       <TaskManager
         tasks={tasks}
         onCompleteTask={handleCompleteTask}
         onDeleteTask={handleDeleteTask}
+        filter={filter}
       />
       {showAddTask && <AddForm onAddTask={handleAddTask} />}
       <div className="footer">©️ 2025 KN</div>
@@ -92,23 +103,45 @@ export default function App() {
   );
 }
 
-function Sidebar({ showAddTask, onShowAddForm }) {
+function Sidebar({ onShowAddTask, onShowAddForm, onFilter, filter }) {
   return (
     <div className="sidebar">
       <h4>Actions</h4>
-      <div>Filter tasks by...</div>
-      <div>Current</div>
-      <div>Completed</div>
-      <div>Important</div>
-      <div>None</div>
-      <Button showAddTask={showAddTask} onClick={onShowAddForm}>
+      <label>Filter tasks by...</label>
+      <ul>
+        <li
+          className={filter === "current" ? "selected" : null}
+          onClick={() => onFilter("current")}
+        >
+          Current
+        </li>
+        <li
+          className={filter === "important" ? "selected" : null}
+          onClick={() => onFilter("important")}
+        >
+          Important
+        </li>
+        <li
+          className={filter === "completed" ? "selected" : null}
+          onClick={() => onFilter("completed")}
+        >
+          Completed
+        </li>
+        <li
+          className={filter === "none" ? "selected" : null}
+          onClick={() => onFilter("none")}
+        >
+          None
+        </li>
+      </ul>
+      <Button onShowAddTask={onShowAddTask} onClick={onShowAddForm}>
         sidebar-button
       </Button>
     </div>
   );
 }
 
-function TaskManager({ tasks, onCompleteTask, onDeleteTask }) {
+function TaskManager({ tasks, filter, onCompleteTask, onDeleteTask }) {
   const [sortBy, setSortBy] = useState("id");
 
   const currentSort = (a, b) => {
@@ -124,27 +157,33 @@ function TaskManager({ tasks, onCompleteTask, onDeleteTask }) {
   }
 
   return (
-    <div className="content">
+    <div className={filter === "none" ? "content" : "filter-view"}>
       <Sortbar sortBy={sortBy} onSort={handleSort} />
-      <Tasklist
-        tasks={tasks}
-        onCompleteTask={onCompleteTask}
-        onDeleteTask={onDeleteTask}
-        currentSort={currentSort}
-      >
-        current
-      </Tasklist>
-      <Tasklist
-        tasks={tasks}
-        onCompleteTask={onCompleteTask}
-        onDeleteTask={onDeleteTask}
-        currentSort={currentSort}
-      >
-        important
-      </Tasklist>
-      <Tasklist tasks={tasks} currentSort={(a, b) => b.id - a.id}>
-        completed
-      </Tasklist>
+      {(filter === "current" || filter === "none") && (
+        <Tasklist
+          tasks={tasks}
+          onCompleteTask={onCompleteTask}
+          onDeleteTask={onDeleteTask}
+          currentSort={currentSort}
+        >
+          current
+        </Tasklist>
+      )}
+      {(filter === "important" || filter === "none") && (
+        <Tasklist
+          tasks={tasks}
+          onCompleteTask={onCompleteTask}
+          onDeleteTask={onDeleteTask}
+          currentSort={currentSort}
+        >
+          important
+        </Tasklist>
+      )}
+      {(filter === "completed" || filter === "none") && (
+        <Tasklist tasks={tasks} currentSort={(a, b) => b.id - a.id}>
+          completed
+        </Tasklist>
+      )}
     </div>
   );
 }
@@ -314,10 +353,10 @@ function AddForm({ onAddTask }) {
   );
 }
 
-function Button({ showAddTask, onClick, children }) {
+function Button({ onShowAddTask, onClick, children }) {
   return (
     <button className={children} onClick={onClick}>
-      {showAddTask ? "Close Form" : "Add Task"}
+      {onShowAddTask ? "Close Form" : "Add Task"}
     </button>
   );
 }

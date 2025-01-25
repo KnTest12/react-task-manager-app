@@ -62,13 +62,14 @@ html {
   justify-content: space-between;
 }
 
-.sidebar div {
+.sidebar li,
+.sidebar label {
   padding: 2vh;
   padding-left: 20px;
   text-align: left;
 }
 
-.sidebar div:hover {
+.sidebar li:hover {
   color: var(--color-sidebar-hover-text);
   background: var(--color-sidebar-hover-background);
   cursor: pointer;
@@ -152,6 +153,10 @@ textarea {
   padding: 0px 20px;
 }
 
+.filter-view {
+  overflow: auto;
+}
+
 .sortbar {
   grid-area: sortbar;
   position: sticky;
@@ -162,7 +167,6 @@ textarea {
   align-items: center;
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
-  margin: 0px -19px;
   padding: 10px 0px 10px 20px;
 }
 
@@ -177,8 +181,12 @@ textarea {
 .sortbar li {
   margin-top: 10px;
   margin-right: 20px;
+  margin-bottom: 10px;
   padding: 10px;
   cursor: pointer;
+  background: var(--color-content-background);
+  border: 1px solid var(--color-content-border);
+  border-radius: 5px;
 }
 
 .selected {
@@ -242,7 +250,9 @@ ul {
   list-style-type: none;
 }
 
-li {
+.current li,
+.important li,
+.completed li {
   background: var(--color-content-background);
   margin-bottom: 10px;
   padding: 15px;
