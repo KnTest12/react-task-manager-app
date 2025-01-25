@@ -306,7 +306,7 @@ function AddForm({ onAddTask }) {
       <input
         type="date"
         value={date}
-        min={new Date().toISOString().split("T")[0]}
+        min={new Date().toLocaleDateString("en-CA")}
         onChange={(e) => setDate(e.target.value)}
       ></input>
       <Button>form-button</Button>
