@@ -50,15 +50,17 @@ const taskList = [
 export default function App() {
   const [tasks, setTasks] = useState([...taskList]);
   const [showAddTask, setShowAddTask] = useState(false);
-  const id = tasks.length + 1;
+  const [id, setId] = useState(tasks.length);
 
   function handleShowAddForm() {
     setShowAddTask((showAddTask) => !showAddTask);
   }
 
   function handleAddTask(task) {
-    setTasks((taskList) => [...taskList, task]);
+    const newId = id + 1;
+    setTasks((taskList) => [...taskList, { ...task, id: newId }]);
     setShowAddTask(false);
+    setId((id) => id + 1);
   }
 
   function handleCompleteTask(id) {
@@ -84,7 +86,7 @@ export default function App() {
         onCompleteTask={handleCompleteTask}
         onDeleteTask={handleDeleteTask}
       />
-      {showAddTask && <AddForm id={id} onAddTask={handleAddTask} />}
+      {showAddTask && <AddForm onAddTask={handleAddTask} />}
       <div className="footer">©️ 2025 KN</div>
     </div>
   );
@@ -140,7 +142,9 @@ function TaskManager({ tasks, onCompleteTask, onDeleteTask }) {
       >
         important
       </Tasklist>
-      <Tasklist tasks={tasks}>completed</Tasklist>
+      <Tasklist tasks={tasks} currentSort={(a, b) => b.id - a.id}>
+        completed
+      </Tasklist>
     </div>
   );
 }
@@ -250,7 +254,7 @@ function TaskInfo({ task, onCompleteTask, onDeleteTask }) {
   );
 }
 
-function AddForm({ id, onAddTask }) {
+function AddForm({ onAddTask }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
@@ -274,7 +278,6 @@ function AddForm({ id, onAddTask }) {
     if (!title || !description || !date) return;
 
     const newTask = {
-      id,
       title,
       description,
       deadline,
